@@ -1,35 +1,21 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
-import os
+import torch
 
-# Use your valid Hugging Face token
-os.environ['HUGGINGFACE_HUB_TOKEN'] = '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'
-os.environ["HUGGINGFACE_TOKEN"] = "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"
-
-
+# 모델과 토크나이저 로드
 model_name = "meta-llama/Llama-3.1-8B-Instruct"
-
-
-### 
-import logging
-from transformers import logging as hf_logging
-
-# Enable logging
-hf_logging.set_verbosity_info()
-
-# Load tokenizer and model
-print("Loading tokenizer...")
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-print("Tokenizer loaded.")
+model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, device_map="auto")
 
-print("Loading model...")
-model = AutoModelForCausalLM.from_pretrained(model_name)
-print("Model loaded.")
+# 간단한 금융 관련 프롬프트 테스트
+prompt = "What is the importance of diversification in investment?"
 
-input_text = "What is the capital of France?"
-inputs = tokenizer(input_text, return_tensors="pt")
+# 입력 인코딩
+inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
 
-print("Generating output...")
-outputs = model.generate(**inputs)
+# 출력 생성
+outputs = model.generate(**inputs, max_length=200, num_return_sequences=1)
+
+# 출력 디코딩 및 출력
 response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-print("Response:", response)
-
+print(f"Prompt: {prompt}\n")
+print(f"Response: {response}")
