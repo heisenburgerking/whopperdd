@@ -1,0 +1,42 @@
+  0%|          | 0/846 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "/data/ephemeral/home/kyc/whopperdd/finetune_llama.py", line 116, in <module>
+    trainer.train()
+  File "/opt/conda/lib/python3.10/site-packages/transformers/trainer.py", line 1938, in train
+    return inner_training_loop(
+  File "/opt/conda/lib/python3.10/site-packages/transformers/trainer.py", line 2279, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs)
+  File "/opt/conda/lib/python3.10/site-packages/transformers/trainer.py", line 3318, in training_step
+    loss = self.compute_loss(model, inputs)
+  File "/opt/conda/lib/python3.10/site-packages/transformers/trainer.py", line 3363, in compute_loss
+    outputs = model(**inputs)
+  File "/opt/conda/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/opt/conda/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/conda/lib/python3.10/site-packages/peft/peft_model.py", line 812, in forward
+    return self.get_base_model()(*args, **kwargs)
+  File "/opt/conda/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/opt/conda/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/conda/lib/python3.10/site-packages/transformers/models/llama/modeling_llama.py", line 1189, in forward
+    outputs = self.model(
+  File "/opt/conda/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/opt/conda/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/conda/lib/python3.10/site-packages/transformers/models/llama/modeling_llama.py", line 1001, in forward
+    layer_outputs = decoder_layer(
+  File "/opt/conda/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/opt/conda/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/conda/lib/python3.10/site-packages/transformers/models/llama/modeling_llama.py", line 734, in forward
+    hidden_states, self_attn_weights, present_key_value = self.self_attn(
+  File "/opt/conda/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/opt/conda/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/opt/conda/lib/python3.10/site-packages/transformers/models/llama/modeling_llama.py", line 424, in forward
+    attn_weights = torch.matmul(query_states, key_states.transpose(2, 3)) / math.sqrt(self.head_dim)
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 32.00 MiB. GPU 0 has a total capacty of 31.74 GiB of which 10.38 MiB is free. Process 3669917 has 31.73 GiB memory in use. Of the allocated memory 31.30 GiB is allocated by PyTorch, and 66.05 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
