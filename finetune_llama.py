@@ -72,6 +72,12 @@ def tokenize_data(data):
 print("Tokenizing data...")
 tokenized_data = tokenize_data(training_data)
 
+# 데이터셋 분할 추가
+from sklearn.model_selection import train_test_split
+
+# 학습 데이터와 평가 데이터 분할
+train_data, eval_data = train_test_split(tokenized_data, test_size=0.1, random_state=42)
+
 # Step 4: Create a Dataset and DataLoader
 class FinancialDataset(Dataset):
     def __init__(self, data):
@@ -93,8 +99,8 @@ class FinancialDataset(Dataset):
         return item
 
 print("Creating DataLoader...")
-dataset = FinancialDataset(tokenized_data)
-dataloader = DataLoader(dataset, batch_size=1, shuffle=True)
+train_dataset = FinancialDataset(train_data)
+eval_dataset = FinancialDataset(eval_data)
 
 # GPU 메모리 설정 추가
 torch.cuda.empty_cache()
@@ -134,8 +140,10 @@ model = get_peft_model(model, lora_config)
 print("Setting up training arguments...")
 training_args = TrainingArguments(
     output_dir="./llama3-mcqa-lora",
-    evaluation_strategy="epoch",
+    evaluation_strategy="steps",  # epoch에서 steps로 변경
+    eval_steps=100,              # 100 스텝마다 평가
     per_device_train_batch_size=1,
+    per_device_eval_batch_size=1,  # 평가용 배치 사이즈 추가
     gradient_accumulation_steps=16,
     num_train_epochs=3,
     learning_rate=2e-5,
@@ -145,8 +153,9 @@ training_args = TrainingArguments(
     fp16=True,
     gradient_checkpointing=True,
     report_to=[],
-    remove_unused_columns=False,  # 추가
-    label_names=["labels"]  # 추가
+    remove_unused_columns=False,
+    label_names=["labels"],
+    ddp_find_unused_parameters=False,
 )
 
 # Step 8: Initialize the Trainer and Train the Model
@@ -154,7 +163,8 @@ print("Initializing Trainer...")
 trainer = Trainer(
     model=model,
     args=training_args,
-    train_dataset=dataset,
+    train_dataset=train_dataset,
+    eval_dataset=eval_dataset,  # 평가 데이터셋 추가
     data_collator=lambda data: {
         'input_ids': torch.stack([f['input_ids'] for f in data]),
         'attention_mask': torch.stack([f['attention_mask'] for f in data]),
@@ -174,7 +184,14 @@ print("Model saved successfully!")
 
 # Step 10: Perform Inference with the Fine-Tuned Model
 print("Loading the fine-tuned model for inference...")
-qa_pipeline = pipeline("text-generation", model="./llama3-mcqa-lora", tokenizer=tokenizer)
+qa_pipeline = pipeline(
+    "text-generation", 
+    model="./llama3-mcqa-lora", 
+    tokenizer=tokenizer,
+    max_new_tokens=512,  # 또는 필요한 만큼의 적절한 값
+    do_sample=True,
+    temperature=0.7
+)
 
 # Example MCQA question
 question = "What was the trend of the KOSPI on October 20, 2024?"
