@@ -6,6 +6,7 @@ import logging
 import time
 import re
 from typing import List, Dict, Optional
+import os  # 추가
 
 class NewsCrawler:
     def __init__(self):
@@ -13,6 +14,7 @@ class NewsCrawler:
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
         }
         self.logger = self._setup_logger()
+        self._ensure_data_directory()  # 생성자에 추가
         
     def _setup_logger(self) -> logging.Logger:
         logger = logging.getLogger('NewsCrawler')
@@ -22,6 +24,11 @@ class NewsCrawler:
         handler.setFormatter(formatter)
         logger.addHandler(handler)
         return logger
+
+    def _ensure_data_directory(self):
+        """데이터 저장 디렉토리 생성"""
+        data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data', 'raw')
+        os.makedirs(data_dir, exist_ok=True)
 
     async def get_naver_finance_news(
         self,
@@ -111,8 +118,8 @@ class NewsCrawler:
         """수집된 뉴스 데이터를 파일로 저장"""
         try:
             df = pd.DataFrame(data)
-            df.to_csv(f"data/raw/{filename}.csv", index=False, encoding='utf-8-sig')
+            save_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data', 'raw', f"{filename}.csv")
+            df.to_csv(save_path, index=False, encoding='utf-8-sig')
             self.logger.info(f"Successfully saved {len(data)} news articles to {filename}.csv")
         except Exception as e:
             self.logger.error(f"Error saving data to file {filename}: {str(e)}")
-
