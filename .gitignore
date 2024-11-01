@@ -47,3 +47,4 @@ configs/*.yaml
 *.log
 
 requirement.md
+financial-llm-project/data/raw/api_key/*
