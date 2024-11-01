@@ -1,0 +1,50 @@
+INFO:__main__:키워드 '한국 금융시장' 관련 논문 수집 중...
+INFO:scholarly:Getting https://scholar.google.com/scholar?hl=en&q=%ED%95%9C%EA%B5%AD%20%EA%B8%88%EC%9C%B5%EC%8B%9C%EC%9E%A5&as_vis=0&as_sdt=0,33
+INFO:httpx:HTTP Request: GET https://scholar.google.com/scholar?hl=en&q=%ED%95%9C%EA%B5%AD%20%EA%B8%88%EC%9C%B5%EC%8B%9C%EC%9E%A5&as_vis=0&as_sdt=0,33 "HTTP/1.1 200 OK"
+INFO:scholarly:Got a captcha request.
+INFO:scholarly:Neither Chrome nor Firefox/Geckodriver found in PATH
+INFO:scholarly:Exception AttributeError while fetching page: ("'NoneType' object has no attribute 'current_url'",)
+INFO:scholarly:Retrying with a new session.
+INFO:httpx:HTTP Request: GET https://scholar.google.com/scholar?hl=en&q=%ED%95%9C%EA%B5%AD%20%EA%B8%88%EC%9C%B5%EC%8B%9C%EC%9E%A5&as_vis=0&as_sdt=0,33 "HTTP/1.1 200 OK"
+INFO:scholarly:Got a captcha request.
+INFO:scholarly:Neither Chrome nor Firefox/Geckodriver found in PATH
+INFO:scholarly:Exception AttributeError while fetching page: ("'NoneType' object has no attribute 'current_url'",)
+INFO:scholarly:Retrying with a new session.
+INFO:httpx:HTTP Request: GET https://scholar.google.com/scholar?hl=en&q=%ED%95%9C%EA%B5%AD%20%EA%B8%88%EC%9C%B5%EC%8B%9C%EC%9E%A5&as_vis=0&as_sdt=0,33 "HTTP/1.1 200 OK"
+INFO:scholarly:Got a captcha request.
+INFO:scholarly:Neither Chrome nor Firefox/Geckodriver found in PATH
+INFO:scholarly:Exception AttributeError while fetching page: ("'NoneType' object has no attribute 'current_url'",)
+INFO:scholarly:Retrying with a new session.
+INFO:httpx:HTTP Request: GET https://scholar.google.com/scholar?hl=en&q=%ED%95%9C%EA%B5%AD%20%EA%B8%88%EC%9C%B5%EC%8B%9C%EC%9E%A5&as_vis=0&as_sdt=0,33 "HTTP/1.1 200 OK"
+INFO:scholarly:Got a captcha request.
+INFO:scholarly:Neither Chrome nor Firefox/Geckodriver found in PATH
+INFO:scholarly:Exception AttributeError while fetching page: ("'NoneType' object has no attribute 'current_url'",)
+INFO:scholarly:Retrying with a new session.
+INFO:httpx:HTTP Request: GET https://scholar.google.com/scholar?hl=en&q=%ED%95%9C%EA%B5%AD%20%EA%B8%88%EC%9C%B5%EC%8B%9C%EC%9E%A5&as_vis=0&as_sdt=0,33 "HTTP/1.1 200 OK"
+INFO:scholarly:Got a captcha request.
+INFO:scholarly:Neither Chrome nor Firefox/Geckodriver found in PATH
+INFO:scholarly:Exception AttributeError while fetching page: ("'NoneType' object has no attribute 'current_url'",)
+INFO:scholarly:Retrying with a new session.
+ERROR:__main__:논문 검색 중 오류 발생: Cannot Fetch from Google Scholar.
+INFO:__main__:키워드 '기업재무 한국' 관련 논문 수집 중...
+INFO:scholarly:Getting https://scholar.google.com/scholar?hl=en&q=%EA%B8%B0%EC%97%85%EC%9E%AC%EB%AC%B4%20%ED%95%9C%EA%B5%AD&as_vis=0&as_sdt=0,33
+Traceback (most recent call last):
+  File "/data/ephemeral/home/findurwind/whopperdd/src/data_collection/academic_crawler.py", line 156, in <module>
+    papers_data = crawler.crawl_academic_papers()
+  File "/data/ephemeral/home/findurwind/whopperdd/src/data_collection/academic_crawler.py", line 126, in crawl_academic_papers
+    papers = self.search_papers(keyword, papers_per_keyword)
+  File "/data/ephemeral/home/findurwind/whopperdd/src/data_collection/academic_crawler.py", line 89, in search_papers
+    search_query = scholarly.search_pubs(keyword)
+  File "/opt/conda/lib/python3.10/site-packages/scholarly/_scholarly.py", line 160, in search_pubs
+    return self.__nav.search_publications(url)
+  File "/opt/conda/lib/python3.10/site-packages/scholarly/_navigator.py", line 296, in search_publications
+    return _SearchScholarIterator(self, url)
+  File "/opt/conda/lib/python3.10/site-packages/scholarly/publication_parser.py", line 53, in __init__
+    self._load_url(url)
+  File "/opt/conda/lib/python3.10/site-packages/scholarly/publication_parser.py", line 59, in _load_url
+    self._soup = self._nav._get_soup(url)
+  File "/opt/conda/lib/python3.10/site-packages/scholarly/_navigator.py", line 239, in _get_soup
+    html = self._get_page('https://scholar.google.com{0}'.format(url))
+  File "/opt/conda/lib/python3.10/site-packages/scholarly/_navigator.py", line 113, in _get_page
+    time.sleep(w)
+KeyboardInterrupt
